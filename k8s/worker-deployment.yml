@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+  namespace: vote-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: worker-container
+        image: saikishore1903/k8s-kind-voting-app-worker:latest
+        startupProbe:
+          exec:
+            command:
+              - /app/worker-healthcheck.sh
+          failureThreshold: 30
+          periodSeconds: 10
+
+         
